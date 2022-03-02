@@ -1,0 +1,17 @@
+.brand-logo {
+    max-width: 15vw;
+    @media (min-width: 600px) and (max-width: 2000px) {
+        width: 10vw;
+    }
+}
+
+.letter-logo {
+    max-width: 40vw;
+}
+
+.title {
+    font-size: 1em;
+    font-weight: 350;
+    font-style: italic;
+    color: var(--formBtnMainColor);
+}

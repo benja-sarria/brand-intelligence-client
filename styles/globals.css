@@ -1,16 +1,29 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    background-image: url("/assets/img/background.webp");
+    background-size: cover;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:root {
+    --globalPurpleMain: rgba(128, 0, 128, 0.746);
+    --formImputColorMain: rgba(128, 0, 128, 0.328);
+    --borderColorFormMain: rgba(128, 0, 128, 0.13);
+    --shadowBoxColorFormMain: rgba(128, 0, 128, 0.068);
+    --formBtnMainColor: rgba(87, 0, 128, 0.828);
+    --formBtnHoverColor: rgba(0, 175, 137, 0.828);
+    --formBtnFocusBorderColor: rgba(0, 175, 137, 0.13);
+    --formBtnBoxShadowColor: rgba(0, 175, 137, 0.096);
 }
