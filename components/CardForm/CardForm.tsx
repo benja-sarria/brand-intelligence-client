@@ -9,9 +9,10 @@ export const CardForm = (props: any) => {
             <div className={`card-body ${style["custom-card-body"]}`}>
                 <form
                     action=""
-                    className={`mb-3 ${style["custom-form"]}`}
+                    className={`mb-3 ${style["custom-form"]} has-validation`}
                     onSubmit={(evt) => {
                         evt.preventDefault();
+                        btnHandler(evt);
                     }}
                 >
                     <label htmlFor="subject" className="form-label">
@@ -24,12 +25,13 @@ export const CardForm = (props: any) => {
                         id="subject"
                         className={`form-control ${style["form-control-custom"]}`}
                     />
-                    <button
-                        className={`btn ${style["form-custom-btn"]}`}
-                        onClick={(evt) => {
-                            btnHandler(evt);
-                        }}
+                    <div
+                        className={`invalid-feedback ${style["hidden"]}`}
+                        id="errorAlert"
                     >
+                        Por favor, ingresa un rubro válido
+                    </div>
+                    <button className={`btn ${style["form-custom-btn"]}`}>
                         Enviar
                     </button>
                 </form>

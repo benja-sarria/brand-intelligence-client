@@ -1,13 +1,44 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { NiceClassContext } from "../../context/NiceClassProvider";
 import { CardForm } from "../CardForm/CardForm";
+import style from "../CardForm/CardForm.module.scss";
 
 export const CardFormContainer = () => {
-    const [first, setfirst] = useState();
+    const [loading, setLoading] = useState(false);
+    const { niceClass, setNiceClass, setCategory } =
+        useContext(NiceClassContext);
 
-    const btnHandler = (evt: Event) => {
+    const btnHandler = async (evt: {
+        target: { value: string }[];
+        preventDefault: Function;
+    }) => {
         evt.preventDefault();
-        console.log("Se activó el botón");
+        const alertMessage = document.querySelector("#errorAlert");
+        if (+evt.target[0].value || !evt.target[0].value) {
+            if (alertMessage) {
+                alertMessage.classList.remove(`${style["hidden"]}`);
+                alertMessage.classList.add(`${style["show"]}`);
+            }
+        } else {
+            if (alertMessage) {
+                if (!alertMessage.classList.contains("hidden")) {
+                    alertMessage.classList.add(`${style["hidden"]}`);
+                    alertMessage.classList.remove(`${style["show"]}`);
+                }
+            }
+            console.log("Se activó el botón");
+            console.log(evt.target[0].value);
+            setLoading(true);
+            const response = await fetch(
+                `http://localhost:8080/api/niceClass?classificationSubject=${evt.target[0].value}`
+            );
+            const data = await response.json();
+            console.log(data);
+            setLoading(false);
+            setCategory(evt.target[0].value);
+            setNiceClass(data);
+        }
     };
 
-    return <CardForm btnHandler={btnHandler} />;
+    return loading ? "" : <CardForm btnHandler={btnHandler} />;
 };

@@ -1,12 +1,18 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { CardForm } from "../components/CardForm/CardForm";
+import { useContext, useEffect } from "react";
 import { CardFormContainer } from "../components/CardFormContainer/CardFormContainer";
 import { HomeHeader } from "../components/HomeHeader/HomeHeader";
+import { NiceCardContainer } from "../components/NiceCardContainer/NiceCardContainer";
+import { NiceClassContext } from "../context/NiceClassProvider";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
+    const { niceClass } = useContext(NiceClassContext);
+
+    useEffect(() => {}, [niceClass]);
+
     return (
         <div className={styles.container}>
             <Head>
@@ -19,8 +25,21 @@ const Home: NextPage = () => {
             </Head>
 
             <main className={styles.main}>
-                <HomeHeader />
-                <CardFormContainer />
+                {niceClass ? (
+                    <HomeHeader type={"secondary"} />
+                ) : (
+                    <HomeHeader type={"main"} />
+                )}
+
+                {niceClass ? (
+                    niceClass.niceClass.length <= 3 ? (
+                        <NiceCardContainer />
+                    ) : (
+                        ""
+                    )
+                ) : (
+                    <CardFormContainer />
+                )}
             </main>
 
             <footer className={styles.footer}>
