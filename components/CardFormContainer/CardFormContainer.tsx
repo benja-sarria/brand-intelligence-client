@@ -35,10 +35,10 @@ export const CardFormContainer = () => {
             const data = await response.json();
             console.log(data);
             setLoading(false);
-            setCategory(evt.target[0].value);
+            setCategory(evt.target[0].value.replace(/[ \t]+$/, ""));
             setNiceClass(data);
         }
     };
 
-    return loading ? "" : <CardForm btnHandler={btnHandler} />;
+    return loading ? <></> : <CardForm btnHandler={btnHandler} />;
 };

@@ -1,0 +1,35 @@
+.form-control-custom {
+    border-color: var(--formImputColorMain);
+    &:focus {
+        border-color: var(--borderColorFormMain);
+        box-shadow: 0 0 0 0.25rem var(--shadowBoxColorFormMain);
+    }
+}
+
+.custom-table {
+    background-color: var(--shadowColorTable);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+.custom-table-row {
+    border-color: rgba(0, 0, 0, 0.15);
+}
+.custom-table-cell {
+    color: var(--shadowTableTextColor) !important;
+    font-size: 1.17em;
+}
+.heading {
+    font-size: 1.25em;
+}
+.class-heading {
+    display: flex;
+    align-items: flex-end;
+}
+.custom-table-heading {
+    margin-bottom: 0em;
+}
+.custom-table-menu {
+    position: relative;
+    top: 0.35em;
+    left: 0.3em;
+}

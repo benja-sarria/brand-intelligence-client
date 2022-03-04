@@ -3,3 +3,41 @@
     justify-content: space-evenly;
     min-width: 70vw;
 }
+
+.custom-btn {
+    padding: 0.85em;
+    font-size: 1.25em;
+    min-width: 17vw;
+    margin: 1.25em 0.15em;
+    background-color: var(--formBtnMainColor);
+    color: white;
+    transition: background-color 600ms ease;
+
+    &:hover {
+        background-color: var(--formBtnHoverColor);
+        color: white;
+        transition: background-color 600ms ease;
+    }
+    &:focus {
+        border-color: var(--formBtnFocusBorderColor);
+        box-shadow: 0 0 0 0.25rem var(--formBtnBoxShadowColor);
+    }
+}
+
+.custom-section-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-btn-container {
+    align-self: center;
+    margin-top: 1.5em;
+}
+.custom-subtitle {
+    font-size: 1.5em;
+    color: var(--formBtnMainColor);
+}
+
+.custom-subtitle-container {
+    align-self: center;
+}

@@ -27,6 +27,8 @@ a {
     --formBtnHoverColor: rgba(0, 175, 137, 0.828);
     --formBtnFocusBorderColor: rgba(0, 175, 137, 0.13);
     --formBtnBoxShadowColor: rgba(0, 175, 137, 0.096);
+    --shadowColorTable: rgba(132, 99, 148, 0.368);
+    --shadowTableTextColor: rgba(47, 0, 75, 0.952);
 }
 
 ::-webkit-scrollbar {
