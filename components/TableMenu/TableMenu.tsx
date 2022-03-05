@@ -3,6 +3,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import SortIcon from "@mui/icons-material/Sort";
 import { SetStateAction, useState } from "react";
+import style from "./TableMenu.module.scss";
 
 const options = ["Ordenar por Relevancia", "Ordenar por Clase"];
 
@@ -68,6 +69,9 @@ export const TableMenu = ({
                     style: {
                         maxHeight: ITEM_HEIGHT * 4.5,
                         width: "24ch",
+                        backgroundColor: `var(--globalPurpleMain)`,
+                        color: "white",
+                        opacity: 1,
                     },
                 }}
             >
@@ -77,6 +81,7 @@ export const TableMenu = ({
                         onClick={(event: React.MouseEvent) => {
                             handleClose(event);
                         }}
+                        className={`${style["custom-menu-item"]}`}
                     >
                         {option}
                     </MenuItem>

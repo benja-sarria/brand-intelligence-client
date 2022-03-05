@@ -20,15 +20,19 @@ a {
 :root {
     --globalPurpleMain: rgba(128, 0, 128, 0.746);
     --globalPurpleMainScrollbar: rgba(238, 0, 238, 0.746);
+    --globalCircleDropdownColor: rgba(167, 98, 167, 0.746);
     --formImputColorMain: rgba(128, 0, 128, 0.328);
     --borderColorFormMain: rgba(128, 0, 128, 0.13);
     --shadowBoxColorFormMain: rgba(128, 0, 128, 0.068);
     --formBtnMainColor: rgba(87, 0, 128, 0.828);
     --formBtnHoverColor: rgba(0, 175, 137, 0.828);
-    --formBtnFocusBorderColor: rgba(0, 175, 137, 0.13);
-    --formBtnBoxShadowColor: rgba(0, 175, 137, 0.096);
-    --shadowColorTable: rgba(132, 99, 148, 0.368);
-    --shadowTableTextColor: rgba(47, 0, 75, 0.952);
+    --formBtnFocusBorderColor: rgba(0, 175, 87, 0.075);
+    --formBtnBoxShadowColor: rgba(0, 255, 200, 0.096);
+    --shadowColorTable: rgba(132, 99, 148, 0.233);
+    --shadowTableTextColor: rgba(40, 0, 63, 0.952);
+    --shadowTableTextColorEven: rgba(40, 0, 63, 0.787);
+    --shadowTableTextColorOdd: rgba(47, 0, 75, 0.664);
+    --checkboxColor: rgba(148, 253, 231, 0.945);
 }
 
 ::-webkit-scrollbar {
@@ -45,4 +49,37 @@ a {
         currentColor 200%
     );
     opacity: 0.015;
+}
+
+/* Not being able to modify color from module */
+.accordion-button {
+    background-color: var(--globalPurpleMain);
+    color: white;
+}
+.accordion-button:not(.collapsed) {
+    background-color: var(--globalCircleDropdownColor);
+    color: white;
+}
+.accordion-button::after {
+    background-image: url("https://i.ibb.co/qpLKMY5/outline-expand-more-white-36dp.png");
+    background-size: 2em;
+    background-position: center;
+}
+.accordion-button:not(.collapsed)::after {
+    background-image: url("https://i.ibb.co/qpLKMY5/outline-expand-more-white-36dp.png");
+    background-size: 2em;
+    background-position: center;
+    transform: rotate(-180deg);
+}
+
+.collapse:not(.show) {
+    opacity: 0;
+    display: block;
+    visibility: hidden;
+    transition: all 600ms ease-in-out;
+}
+
+.accordion-collapse {
+    transition: all 300ms ease-in-out;
+    z-index: 3;
 }

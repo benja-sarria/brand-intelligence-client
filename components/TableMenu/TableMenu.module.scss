@@ -1,0 +1,8 @@
+.custom-menu-item {
+    &:hover {
+        background-color: darken(
+            $color: rgba(128, 0, 128, 0.746),
+            $amount: 0.5
+        ) !important;
+    }
+}

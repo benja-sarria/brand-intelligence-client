@@ -49,22 +49,40 @@ export const NiceProductList = () => {
         []
     );
 
+    const debounceBlurInput = useCallback(
+        debounce((target) => target.blur(), 1000),
+        []
+    );
+
     const inputHandler = (evt: ChangeEvent<HTMLInputElement>) => {
         console.dir(evt.target.value);
         debounceDropDown(evt.target.value.replace(/[ \t]+$/, ""));
         debounceSorting();
         debouncePageOne();
+        debounceBlurInput(evt.target);
     };
 
     const checkboxHandler = (
         selectedClass: number,
         appends: boolean,
-        description: string
+        description: string,
+        [row]: HTMLElement[],
+        cells: HTMLElement[]
     ) => {
         if (!selectedNiceProtection[selectedClass] && appends) {
             setSelectedNiceProtection({
                 ...selectedNiceProtection,
                 [selectedClass]: [description],
+            });
+            row.classList.add(`${style["custom-selected-row"]}`);
+            cells.forEach((cell: any) => {
+                cell.classList.add(`${style["custom-selected-cell"]}`);
+                if (cell.dataset.type) {
+                    cell.children[0].src =
+                        cell.dataset.type === "product"
+                            ? "/assets/img/productSecondary.webp"
+                            : "/assets/img/servicesSecondary.webp";
+                }
             });
         } else if (selectedNiceProtection[selectedClass] && appends) {
             setSelectedNiceProtection({
@@ -73,6 +91,16 @@ export const NiceProductList = () => {
                     ...selectedNiceProtection[selectedClass],
                     description,
                 ],
+            });
+            row.classList.add(`${style["custom-selected-row"]}`);
+            cells.forEach((cell: any) => {
+                cell.classList.add(`${style["custom-selected-cell"]}`);
+                if (cell.dataset.type) {
+                    cell.children[0].src =
+                        cell.dataset.type === "product"
+                            ? "/assets/img/productSecondary.webp"
+                            : "/assets/img/servicesSecondary.webp";
+                }
             });
         } else if (!appends) {
             setSelectedNiceProtection({
@@ -91,7 +119,74 @@ export const NiceProductList = () => {
                 delete contextCopy[selectedClass];
                 setSelectedNiceProtection({ ...contextCopy });
             }
+            row.classList.remove(`${style["custom-selected-row"]}`);
+            cells.forEach((cell: any) => {
+                cell.classList.remove(`${style["custom-selected-cell"]}`);
+                if (cell.dataset.type) {
+                    cell.children[0].src =
+                        cell.dataset.type === "product"
+                            ? "/assets/img/productMain.webp"
+                            : "/assets/img/servicesMain.webp";
+                }
+            });
         }
+    };
+
+    const correctStyles = () => {
+        const rows = Array.from(document.querySelectorAll(".custom-row"));
+        const cells = Array.from(document.querySelectorAll(".custom-cell"));
+        rows.forEach((row: any) => {
+            if (selectedNiceProtection[row.dataset.class]) {
+                if (
+                    !selectedNiceProtection[row.dataset.class].includes(
+                        row.dataset.name
+                    )
+                ) {
+                    row.classList.remove(`${style["custom-selected-row"]}`);
+                    Array.from(row.children).forEach((children: any) => {
+                        children.classList.remove(
+                            `${style["custom-selected-cell"]}`
+                        );
+                        if (children.dataset.type) {
+                            children.children[0].src =
+                                children.dataset.type === "product"
+                                    ? "/assets/img/productMain.webp"
+                                    : "/assets/img/servicesMain.webp";
+                        }
+                    });
+                } else if (
+                    selectedNiceProtection[row.dataset.class].includes(
+                        row.dataset.name
+                    )
+                ) {
+                    row.classList.add(`${style["custom-selected-row"]}`);
+                    Array.from(row.children).forEach((children: any) => {
+                        children.classList.add(
+                            `${style["custom-selected-cell"]}`
+                        );
+                        if (children.dataset.type) {
+                            children.children[0].src =
+                                children.dataset.type === "product"
+                                    ? "/assets/img/productSecondary.webp"
+                                    : "/assets/img/servicesSecondary.webp";
+                        }
+                    });
+                }
+            } else if (!selectedNiceProtection[row.dataset.class]) {
+                row.classList.remove(`${style["custom-selected-row"]}`);
+                Array.from(row.children).forEach((children: any) => {
+                    children.classList.remove(
+                        `${style["custom-selected-cell"]}`
+                    );
+                    if (children.dataset.type) {
+                        children.children[0].src =
+                            children.dataset.type === "product"
+                                ? "/assets/img/productMain.webp"
+                                : "/assets/img/servicesMain.webp";
+                    }
+                });
+            }
+        });
     };
 
     const sortByImportance = (array: []) => {
@@ -177,50 +272,63 @@ export const NiceProductList = () => {
             .slice(page, 21 + page)
             .map((term: { text: string; niceClass: number }, index: number) => {
                 return (
-                    <tr key={index} className={`${style["custom-table-row"]}`}>
-                        <td className={`${style["custom-table-cell"]}`}>
+                    <tr
+                        key={index}
+                        className={`custom-row ${style["custom-table-row"]}`}
+                        data-name={`${term.text}`}
+                        data-class={`${term.niceClass}`}
+                    >
+                        <td
+                            className={`custom-cell ${style["custom-table-cell"]}`}
+                            data-name={`${term.text}`}
+                            data-class={`${term.niceClass}`}
+                        >
                             {term.niceClass}
                         </td>
-                        <td className={`${style["custom-table-cell"]}`}>
+                        <td
+                            className={`custom-cell ${style["custom-table-cell"]}`}
+                            data-name={`${term.text}`}
+                            data-class={`${term.niceClass}`}
+                        >
                             {term.text}
                         </td>
-                        <td className={`${style["custom-table-cell"]}`}>
+                        <td
+                            className={`custom-cell ${style["custom-table-cell"]}`}
+                            data-name={`${term.text}`}
+                            data-class={`${term.niceClass}`}
+                            data-type={
+                                term.niceClass < 35 ? "product" : "service"
+                            }
+                        >
+                            {term.niceClass < 35 ? (
+                                <img
+                                    src="/assets/img/productMain.webp"
+                                    className={`${style["custom-cell-img"]}`}
+                                />
+                            ) : (
+                                <img
+                                    src="/assets/img/servicesMain.webp"
+                                    className={`${style["custom-cell-img"]}`}
+                                />
+                            )}
+                        </td>
+                        <td
+                            className={`custom-cell ${style["custom-table-cell"]}`}
+                            data-name={`${term.text}`}
+                            data-class={`${term.niceClass}`}
+                        >
                             {" "}
                             <ControlledCheckbox
                                 checkboxHandler={checkboxHandler}
                                 name={term.niceClass}
                                 description={term.text}
+                                selectedNiceProtection={selectedNiceProtection}
                             />
                         </td>
                     </tr>
                 );
             });
         return { currentPage, length: filteredArray.length };
-    };
-
-    const returnAllTerms = (page: number) => {
-        const currentPage = niceClass.wholeClassification
-            .slice(page, 21 + page)
-            .map((term: { text: string; niceClass: number }, index: number) => {
-                return (
-                    <tr key={index} className={`${style["custom-table-row"]}`}>
-                        <td className={`${style["custom-table-cell"]}`}>
-                            {term.niceClass}
-                        </td>
-                        <td className={`${style["custom-table-cell"]}`}>
-                            {term.text}
-                        </td>
-                        <td className={`${style["custom-table-cell"]}`}>
-                            <ControlledCheckbox
-                                checkboxHandler={checkboxHandler}
-                                name={term.niceClass}
-                                description={term.text}
-                            />
-                        </td>
-                    </tr>
-                );
-            });
-        return currentPage;
     };
 
     const input = useRef(category);
@@ -232,6 +340,7 @@ export const NiceProductList = () => {
     useEffect(() => {
         console.log(selectedNiceProtection);
         console.log(searchedTerm);
+        correctStyles();
     }, [
         searchedTerm,
         niceClass,
@@ -242,8 +351,12 @@ export const NiceProductList = () => {
 
     return (
         <>
-            <label htmlFor="search-input" className={`form-label`}>
-                Busca tu producto
+            <label
+                htmlFor="search-input"
+                className={`form-label ${style["custom-table-subtitle"]}`}
+            >
+                Selecciona de la siguiente lista, todos los productos/servicios
+                que se relacionen con lo que ofreces:
             </label>
             <input
                 type="text"
@@ -277,6 +390,11 @@ export const NiceProductList = () => {
                             className={`${style["custom-table-cell"]} ${style["heading"]}`}
                         >
                             Nombre del Producto
+                        </th>
+                        <th
+                            className={`${style["custom-table-cell"]} ${style["heading"]}`}
+                        >
+                            Tipo
                         </th>
                         <th
                             className={`${style["custom-table-cell"]} ${style["heading"]}`}

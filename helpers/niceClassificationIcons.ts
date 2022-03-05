@@ -10,7 +10,7 @@ export const niceInfo: InfoModel = {
     1: {
         img: "/assets/img/niceclass1.webp",
         desc: "Si fabricas productos químicos para la industria, la ciencia y la fotografía, ya sean para la agricultura, la horticultura o la silvicultura. O resinas artificiales en bruto, materias plásticas en bruto; compuestos para la extinción de incendios y la prevención de incendios; preparaciones para templar y soldar metales; sustancias para curtir cueros y pieles de animales; adhesivos (pegamentos) para la industria; masillas y otras materias de relleno en pasta; compost, abonos, fertilizantes; preparaciones biológicas para la industria y la ciencia debes proteger esta Clase Niza.",
-        title: `"Fabricas PRODUCTO para la industria"`,
+        title: `"Fabricas productos químicos relacionados con PRODUCTO para la industria"`,
     },
     2: {
         img: "/assets/img/niceclass2.webp",

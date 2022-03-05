@@ -1,7 +1,14 @@
 .nice-class-container {
+    @media (min-width: 1000px) and (max-width: 3000px) {
+        justify-content: space-evenly;
+        flex-direction: row;
+
+        min-width: 70vw;
+    }
     display: flex;
-    justify-content: space-evenly;
-    min-width: 70vw;
+    min-width: 90vw;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .custom-btn {
@@ -29,9 +36,11 @@
     flex-direction: column;
 }
 
-.custom-btn-container {
+.custom-table-container {
     align-self: center;
     margin-top: 1.5em;
+    min-width: 70vw;
+    max-width: 70vw;
 }
 .custom-subtitle {
     font-size: 1.5em;
