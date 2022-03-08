@@ -16,6 +16,8 @@ import style from "./NiceProductList.module.scss";
 import { ControlledCheckbox } from "../ControlledCheckbox/ControlledCheckbox";
 import { compareClass } from "../../helpers/compareClassFunction";
 import { TableMenu } from "../TableMenu/TableMenu";
+import { compareSelect } from "../../helpers/compareSelectFunction";
+import Link from "next/link";
 
 export const NiceProductList = () => {
     const {
@@ -27,7 +29,11 @@ export const NiceProductList = () => {
     const [searchedTerm, setSearchedTerm] = useState(category);
     const [searchedArray, setSearchedArray] = useState([]);
     const [isSortedByClass, setIsSortedByClass] = useState(false);
+    const [isSortedBySelect, setIsSortedBySelect] = useState(false);
+    const [isSortedByRelevance, setIsSortedByRelevance] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
+    const [renderedList, setRenderedList] =
+        useState<{ currentPage: any[]; length: number }>();
 
     const niceKeys: string[] = Object.keys(niceClass.wholeClassification);
 
@@ -190,6 +196,9 @@ export const NiceProductList = () => {
     };
 
     const sortByImportance = (array: []) => {
+        console.log("Ejecutando sorted by relevance");
+        console.log(array);
+
         array.forEach(
             (
                 term: { text: string; niceClass: number; importance: number },
@@ -218,8 +227,14 @@ export const NiceProductList = () => {
                 term: { text: string; niceClass: number; importance: number },
                 index: number
             ) => {
-                console.log(term);
-                console.log(selectedNiceProtection[term.niceClass]);
+                console.log(
+                    Boolean(
+                        selectedNiceProtection[term.niceClass] &&
+                            selectedNiceProtection[term.niceClass].includes(
+                                term.text
+                            )
+                    )
+                );
 
                 if (
                     selectedNiceProtection[term.niceClass] &&
@@ -228,7 +243,7 @@ export const NiceProductList = () => {
                     term.importance = 0;
                 } else if (term.text.includes(category)) {
                     if (term.text.length === category.length) {
-                        term.importance = 1;
+                        term.importance = 3;
                     } else {
                         term.importance = Math.abs(
                             term.text.length - category.length
@@ -239,8 +254,23 @@ export const NiceProductList = () => {
                 }
             }
         );
+        const filteredArray = array.filter(
+            (element: {
+                text: string;
+                niceClass: number;
+                importance: number;
+            }) => {
+                return element.importance === 0;
+            }
+        );
 
-        const sorted = array.sort(compare);
+        console.log(filteredArray);
+
+        const sorted = array.sort(compareSelect);
+
+        const finalArray = [...filteredArray, ...sorted];
+        console.log(finalArray);
+        setSearchedArray([...filteredArray]);
         return sorted;
     };
 
@@ -279,30 +309,79 @@ export const NiceProductList = () => {
         return sorted;
     };
 
+    const arrangeNonSearched = (array: []) => {
+        const nonSelectedTerms = array.filter(
+            (term: { text: string; niceClass: number }, index: number) => {
+                if (selectedNiceProtection[term.niceClass]) {
+                    return !selectedNiceProtection[term.niceClass].includes(
+                        term.text
+                    );
+                } else {
+                    return term;
+                }
+            }
+        );
+
+        console.log(nonSelectedTerms);
+
+        const selectedTerms = array.filter(
+            (term: { text: string; niceClass: number }, index: number) => {
+                if (selectedNiceProtection[term.niceClass]) {
+                    return selectedNiceProtection[term.niceClass].includes(
+                        term.text
+                    );
+                }
+            }
+        );
+        console.log("este es el final array no filtrado");
+        console.log(selectedTerms);
+
+        const nonSearcheddArray = [...selectedTerms, ...nonSelectedTerms];
+        console.log(nonSearcheddArray);
+        setIsSortedByRelevance(false);
+        return nonSearcheddArray;
+    };
+
     const returnFilteredItems = (
         page: number,
-        sortedBySelect: boolean = false
+        sortedBySelect: boolean = isSortedBySelect
     ) => {
+        console.log(`Sory by select está en: ${sortedBySelect}`);
+
         const filteredArray = searchedTerm
             ? niceClass.wholeClassification.filter(
                   (
                       term: { text: string; niceClass: number },
                       index: number
                   ) => {
-                      return term.text
-                          .toLowerCase()
-                          .includes(searchedTerm.toLowerCase());
+                      return (
+                          term.text
+                              .toLowerCase()
+                              .includes(searchedTerm.toLowerCase()) ||
+                          (selectedNiceProtection[term.niceClass] &&
+                              selectedNiceProtection[term.niceClass].includes(
+                                  term.text
+                              ) &&
+                              !isSortedByRelevance &&
+                              !isSortedByClass)
+                      );
                   }
               )
-            : niceClass.wholeClassification;
+            : [...niceClass.wholeClassification];
 
         const sortedArray = searchedTerm
-            ? !isSortedByClass
-                ? sortedBySelect
-                    ? sortBySelect(filteredArray)
-                    : sortByImportance(filteredArray)
+            ? sortedBySelect && !isSortedByRelevance && !isSortedByClass
+                ? sortBySelect(filteredArray)
+                : !isSortedByClass && !sortedBySelect && isSortedByRelevance
+                ? sortByImportance(filteredArray)
                 : sortByClass(filteredArray)
-            : filteredArray;
+            : arrangeNonSearched(filteredArray);
+
+        console.log(Boolean(searchedTerm));
+        console.log(Boolean(!isSortedByClass));
+        console.log(Boolean(sortedBySelect));
+
+        console.log(sortedArray);
 
         const currentPage = sortedArray
             .slice(page, 21 + page)
@@ -364,14 +443,31 @@ export const NiceProductList = () => {
                     </tr>
                 );
             });
-        return { currentPage, length: filteredArray.length };
+        setRenderedList({ currentPage, length: filteredArray.length });
+        // return { currentPage, length: filteredArray.length };
     };
 
     const input = useRef(category);
     useEffect(() => {
         console.log(input);
         input.current.value = category;
+        returnFilteredItems(currentPage);
     }, []);
+    useEffect(() => {}, []);
+
+    useEffect(() => {
+        returnFilteredItems(currentPage);
+        if (!isSortedBySelect) {
+            setIsSortedByRelevance(true);
+        }
+    }, [
+        selectedNiceProtection,
+        isSortedByClass,
+        isSortedBySelect,
+        currentPage,
+        searchedTerm,
+        isSortedByRelevance,
+    ]);
 
     useEffect(() => {
         console.log(selectedNiceProtection);
@@ -380,9 +476,10 @@ export const NiceProductList = () => {
     }, [
         searchedTerm,
         niceClass,
-        currentPage,
-        selectedNiceProtection,
         isSortedByClass,
+        searchedArray,
+        renderedList,
+        currentPage,
     ]);
 
     return (
@@ -420,6 +517,10 @@ export const NiceProductList = () => {
                                     currentPage={currentPage}
                                     isSortedByClass={isSortedByClass}
                                     type={"niceClass"}
+                                    setIsSortedBySelect={setIsSortedBySelect}
+                                    setIsSortedByRelevance={
+                                        setIsSortedByRelevance
+                                    }
                                 />
                             </div>
                         </th>
@@ -434,9 +535,8 @@ export const NiceProductList = () => {
                             Tipo
                         </th>
                         <th
-                            className={`${style["custom-table-cell"]} ${style["heading"]}`}
+                            className={`${style["custom-table-cell"]} ${style["heading"]}  ${style["select-heading"]}`}
                         >
-                            #
                             <div className={`${style["custom-table-menu"]}`}>
                                 <TableMenu
                                     returnFilteredItems={returnFilteredItems}
@@ -444,26 +544,38 @@ export const NiceProductList = () => {
                                     currentPage={currentPage}
                                     isSortedByClass={isSortedByClass}
                                     type={"select"}
+                                    setIsSortedBySelect={setIsSortedBySelect}
+                                    setIsSortedByRelevance={
+                                        setIsSortedByRelevance
+                                    }
                                 />
                             </div>
                         </th>
                     </tr>
                 </thead>
-                <tbody>{returnFilteredItems(currentPage).currentPage}</tbody>
+                <tbody>
+                    {
+                        /* returnFilteredItems(currentPage).currentPage */ renderedList?.currentPage
+                    }
+                </tbody>
             </Table>
             <FormPagination
                 pages={
                     searchedTerm
-                        ? returnFilteredItems(currentPage).length / 20
-                        : niceClass.wholeClassification.length / 20
+                        ? /* returnFilteredItems(currentPage) */ renderedList &&
+                          renderedList.length / 20
+                        : niceClass.wholeClassification &&
+                          niceClass.wholeClassification.length / 20
                 }
                 setPage={setCurrentPage}
             />
             {Object.keys(selectedNiceProtection).length > 0 && (
                 <div className={`${style["custom-btn-container"]}`}>
-                    <Button className={`btn ${style["form-custom-btn"]}`}>
-                        Confirmar protección
-                    </Button>
+                    <Link href="/trademarkForm">
+                        <a className={`btn ${style["form-custom-btn"]}`}>
+                            Confirmar protección
+                        </a>
+                    </Link>
                 </div>
             )}
         </>

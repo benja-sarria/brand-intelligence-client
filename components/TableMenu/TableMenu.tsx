@@ -16,12 +16,16 @@ export const TableMenu = ({
     currentPage,
     isSortedByClass,
     type,
+    setIsSortedBySelect,
+    setIsSortedByRelevance,
 }: {
     returnFilteredItems: Function;
     setIsSortedByClass: Function;
     currentPage: number;
     isSortedByClass: boolean;
     type: string;
+    setIsSortedBySelect: Function;
+    setIsSortedByRelevance: Function;
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -31,23 +35,31 @@ export const TableMenu = ({
     const handleClose = (event: React.MouseEvent) => {
         setAnchorEl(null);
         console.log(event);
+
         const eventFix = event.target as HTMLElement;
         if (eventFix.textContent === "Ordenar seleccionados primero") {
+            console.log("ordenando seleccionados");
+            setIsSortedByRelevance(false);
+            setIsSortedBySelect(true);
             setIsSortedByClass(false);
-            returnFilteredItems(currentPage, true).currentPage;
+            // returnFilteredItems(currentPage, true);
         } else {
+            console.log(eventFix.textContent);
+            console.log(isSortedByClass);
+
             if (
                 eventFix.textContent === "Ordenar por Clase" &&
                 !isSortedByClass
             ) {
+                setIsSortedByRelevance(false);
+                setIsSortedBySelect(false);
                 setIsSortedByClass(true);
-                returnFilteredItems(currentPage).currentPage;
-            } else if (
-                eventFix.textContent === "Ordenar por Relevancia" &&
-                isSortedByClass
-            ) {
+                // returnFilteredItems(currentPage);
+            } else if (eventFix.textContent === "Ordenar por Relevancia") {
+                setIsSortedByRelevance(true);
+                setIsSortedBySelect(false);
                 setIsSortedByClass(false);
-                returnFilteredItems(currentPage).currentPage;
+                // returnFilteredItems(currentPage);
             }
         }
         const pageOne: any =

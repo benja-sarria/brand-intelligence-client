@@ -1,0 +1,57 @@
+.custom-card {
+    margin: 1.5em auto !important;
+    border: 3px solid var(--globalPurpleMain);
+    border-radius: 0.75em;
+    position: relative;
+    pointer-events: fill;
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    background-color: rgba(255, 255, 255, 0.55);
+}
+.custom-card-body {
+    padding: 2em;
+    min-height: 35vh;
+    max-width: 45vw;
+    color: var(--formBtnMainColor);
+}
+
+.custom-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-control-custom {
+    border-color: var(--formImputColorMain);
+    &:focus {
+        border-color: var(--borderColorFormMain);
+        box-shadow: 0 0 0 0.25rem var(--shadowBoxColorFormMain);
+    }
+}
+
+.form-custom-btn {
+    align-self: flex-end;
+    margin: 1.25em 0.15em;
+    background-color: var(--formBtnMainColor);
+    color: white;
+    transition: background-color 600ms ease;
+
+    &:hover {
+        background-color: var(--formBtnHoverColor);
+        color: white;
+        transition: background-color 600ms ease;
+    }
+    &:focus {
+        border-color: var(--formBtnFocusBorderColor);
+        box-shadow: 0 0 0 0.25rem var(--formBtnBoxShadowColor);
+    }
+}
+
+.hidden {
+    display: block !important;
+    visibility: hidden;
+}
+.show {
+    display: block !important;
+    visibility: visible;
+}
