@@ -7,7 +7,7 @@ import {
     useRef,
     useState,
 } from "react";
-import { Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { NiceClassContext } from "../../context/NiceClassProvider";
 import { compare } from "../../helpers/compareFunction";
 import { FormPagination } from "../FormPagination/FormPagination";
@@ -212,6 +212,37 @@ export const NiceProductList = () => {
         const sorted = array.sort(compare);
         return sorted;
     };
+    const sortBySelect = (array: []) => {
+        array.forEach(
+            (
+                term: { text: string; niceClass: number; importance: number },
+                index: number
+            ) => {
+                console.log(term);
+                console.log(selectedNiceProtection[term.niceClass]);
+
+                if (
+                    selectedNiceProtection[term.niceClass] &&
+                    selectedNiceProtection[term.niceClass].includes(term.text)
+                ) {
+                    term.importance = 0;
+                } else if (term.text.includes(category)) {
+                    if (term.text.length === category.length) {
+                        term.importance = 1;
+                    } else {
+                        term.importance = Math.abs(
+                            term.text.length - category.length
+                        );
+                    }
+                } else {
+                    term.importance = term.text.length;
+                }
+            }
+        );
+
+        const sorted = array.sort(compare);
+        return sorted;
+    };
 
     const sortByClass = (array: []) => {
         const sortedImportanceCriteria: {
@@ -248,7 +279,10 @@ export const NiceProductList = () => {
         return sorted;
     };
 
-    const returnFilteredItems = (page: number) => {
+    const returnFilteredItems = (
+        page: number,
+        sortedBySelect: boolean = false
+    ) => {
         const filteredArray = searchedTerm
             ? niceClass.wholeClassification.filter(
                   (
@@ -264,7 +298,9 @@ export const NiceProductList = () => {
 
         const sortedArray = searchedTerm
             ? !isSortedByClass
-                ? sortByImportance(filteredArray)
+                ? sortedBySelect
+                    ? sortBySelect(filteredArray)
+                    : sortByImportance(filteredArray)
                 : sortByClass(filteredArray)
             : filteredArray;
 
@@ -383,6 +419,7 @@ export const NiceProductList = () => {
                                     setIsSortedByClass={setIsSortedByClass}
                                     currentPage={currentPage}
                                     isSortedByClass={isSortedByClass}
+                                    type={"niceClass"}
                                 />
                             </div>
                         </th>
@@ -400,6 +437,15 @@ export const NiceProductList = () => {
                             className={`${style["custom-table-cell"]} ${style["heading"]}`}
                         >
                             #
+                            <div className={`${style["custom-table-menu"]}`}>
+                                <TableMenu
+                                    returnFilteredItems={returnFilteredItems}
+                                    setIsSortedByClass={setIsSortedByClass}
+                                    currentPage={currentPage}
+                                    isSortedByClass={isSortedByClass}
+                                    type={"select"}
+                                />
+                            </div>
                         </th>
                     </tr>
                 </thead>
@@ -413,6 +459,13 @@ export const NiceProductList = () => {
                 }
                 setPage={setCurrentPage}
             />
+            {Object.keys(selectedNiceProtection).length > 0 && (
+                <div className={`${style["custom-btn-container"]}`}>
+                    <Button className={`btn ${style["form-custom-btn"]}`}>
+                        Confirmar protección
+                    </Button>
+                </div>
+            )}
         </>
     );
 };
