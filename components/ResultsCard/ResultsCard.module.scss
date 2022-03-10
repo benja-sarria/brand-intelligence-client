@@ -1,0 +1,155 @@
+.nice-card {
+    @media (min-width: 1500px) and (max-width: 3000px) {
+        max-width: 25vw;
+        min-width: 25vw;
+        max-height: 120vh;
+        min-height: 60vh;
+        padding: 1em 2em;
+    }
+    @media (min-width: 1000px) and (max-width: 1500px) {
+        max-width: 90vw;
+        min-width: 90vw;
+        padding: 1em 2em;
+    }
+    max-width: 90vw;
+    min-width: 90vw;
+    max-height: 90vh;
+    min-height: 90vh;
+    padding: 0.15em;
+    margin: 1em auto;
+    border-radius: 0.55em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: relative;
+}
+.nice-card-body {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    overflow-x: hidden;
+}
+
+.nice-img {
+    max-width: 10em;
+}
+
+.nice-card-title {
+    font-size: 2.5em;
+    color: white;
+}
+.nice-card-subtitle {
+    font-size: 1.25em;
+    color: white;
+    font-style: italic;
+    text-align: center;
+}
+.nice-card-text {
+    font-size: 1.18em;
+    color: white;
+}
+
+.accordion-btn-custom {
+    margin: 0em 2em;
+}
+
+.img-container {
+    position: relative;
+    width: 13em;
+    height: 12em;
+    max-width: 12em;
+    margin-bottom: 0.35em;
+}
+
+.custom-accordion-body {
+    position: absolute;
+    transition: all 500ms ease;
+    bottom: -3em;
+    overflow-x: hidden;
+    left: 0em;
+    z-index: 3;
+    display: flex;
+    @media (min-width: 600px) and (max-width: 1000px) {
+        bottom: 0em;
+    }
+    @media (min-width: 1000px) and (max-width: 3000px) {
+        bottom: 0em;
+    }
+}
+
+.custom-arrow-icon {
+    color: white;
+}
+
+.custom-close-btn {
+    min-width: revert;
+    max-width: 1em;
+    min-height: 2.5em;
+    max-height: 90%;
+    border-radius: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0em 0em 0em 0.5em;
+}
+
+.custom-accordion-blur {
+    z-index: -5;
+    min-width: 101%;
+    min-height: 101%;
+    background-color: rgba(27, 1, 58, 0.664);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    position: absolute;
+    bottom: 0em;
+    left: 0em;
+    border-radius: 0.75em;
+}
+
+.custom-criteria-container {
+    display: flex;
+    min-width: 100%;
+    justify-content: space-between;
+}
+
+.custom-criteria-subtitle {
+    font-size: 1.15em;
+    margin-bottom: 2em;
+    color: white;
+}
+
+.nice-card-header {
+    display: flex;
+    min-width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.owners-card {
+    @media (min-width: 1500px) and (max-width: 3000px) {
+        max-width: 25vw;
+        min-width: 25vw;
+        max-height: 120vh;
+        min-height: 60vh;
+        padding: 1em 2em;
+    }
+    @media (min-width: 1000px) and (max-width: 1500px) {
+        max-width: 40vw;
+        min-width: 40vw;
+        padding: 1em 2em;
+    }
+    max-width: 90vw;
+    min-width: 90vw;
+    max-height: 90vh;
+    min-height: 90vh;
+    margin: 2em 4em 0em;
+}
+
+.main-card {
+    background-color: var(--shadowResultColorOdd);
+}
+.alternate-card {
+    background-color: var(--shadowTableTextColorEven);
+}

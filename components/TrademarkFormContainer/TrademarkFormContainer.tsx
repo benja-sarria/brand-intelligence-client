@@ -3,6 +3,7 @@ import { NiceClassContext } from "../../context/NiceClassProvider";
 import style from "./TrademarkFormContainer.module.scss";
 import { TrademarkFormCard } from "../TrademarkFormCard/TrademarkFormCard";
 import debounce from "lodash.debounce";
+import { ResultsContainer } from "../ResultsContainer/ResultsContainer";
 
 export const TrademarkFormContainer = () => {
     const {
@@ -85,8 +86,11 @@ export const TrademarkFormContainer = () => {
 
     return loading ? (
         <></>
-    ) : similarities ? (
-        <></>
+    ) : applicationSumUp &&
+      applicationSumUp.selectedNiceProtection &&
+      applicationSumUp.trademark &&
+      applicationSumUp.similarities ? (
+        <ResultsContainer />
     ) : (
         <div className={`${style["custom-trademark-container"]}`}>
             <TrademarkFormCard
