@@ -88,3 +88,30 @@ a {
 .MuiCircularProgress-svg {
     color: var(--formBtnHoverColor);
 }
+
+.high-risk {
+    color: red;
+    right: 2em;
+}
+.moderate-risk {
+    color: orange;
+    right: 2em;
+}
+.high-risk {
+    color: red;
+}
+.high-risk {
+    color: red;
+}
+
+.hidden-criteria {
+    max-height: 0.01em !important;
+    max-height: 0.01em !important;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.main-avg-title {
+    position: relative;
+    left: 120px !important;
+}

@@ -9,6 +9,8 @@ import { IndividualTrademarkMatch } from "../../models/IndividualTrademarkMatch"
 export const ResultsContainer = () => {
     const { applicationSumUp } = useContext(NiceClassContext);
 
+    console.log(typeof applicationSumUp.similarities);
+
     const closeHandler = (evt: SyntheticEvent) => {
         const nativeEvent = evt.nativeEvent as any;
         const [accordionItem]: HTMLElement[] = nativeEvent.path.filter(
@@ -148,29 +150,72 @@ export const ResultsContainer = () => {
                 console.log(registry.niceClass);
 
                 return (
-                    <Accordion flush key={index}>
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header
-                                className={` ${style["accordion-custom-header"]}`}
-                                onClick={(evt) => {
-                                    openHandler(evt);
-                                }}
-                            >
-                                <div
-                                    className={`${style["nice-card-text"]} ${style["accordion-btn-custom"]}`}
-                                >
-                                    <p>Clase Niza {niceClass}</p>
-                                </div>
-                            </Accordion.Header>
-                            <Accordion.Body
-                                className={` ${style["custom-accordion-body"]}`}
-                            >
-                                {/* protection goes here */}
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    </Accordion>
+                    <div
+                        className={`${style["nice-card-text"]} ${style["accordion-btn-custom"]}  ${style["inpi-nice-class"]}`}
+                        key={index}
+                    >
+                        <p>Clase Niza {niceClass}</p>
+                    </div>
                 );
             });
+        }
+    };
+
+    const calculateAverage = (registry: IndividualTrademarkMatch) => {
+        const avgDamerau =
+            100 - (registry.criteria[0] * 100) / registry.trademarkName.length;
+
+        const avgJaro = registry.criteria[1] * 100;
+
+        const avgMetaphone = registry.criteria[2] * 100;
+
+        const avgTfUse = registry.criteria[3] * 100;
+
+        let totalAvg;
+        if (avgMetaphone <= 50) {
+            totalAvg = (avgDamerau + avgJaro + avgMetaphone + avgTfUse) / 3.8;
+        } else {
+            totalAvg = (avgDamerau + avgJaro + avgMetaphone + avgTfUse) / 4;
+        }
+
+        return {
+            totalAvg,
+            similarityDegree:
+                totalAvg >= 75
+                    ? "high"
+                    : totalAvg < 75 && totalAvg >= 50
+                    ? "moderate"
+                    : totalAvg < 50 && totalAvg >= 25
+                    ? "low"
+                    : "barely",
+        };
+    };
+
+    const toggleCriteria = (
+        evt: SyntheticEvent | undefined,
+        similarityNode: Element | undefined
+    ) => {
+        if (evt) {
+            const target = evt.target as HTMLElement;
+            console.log(target.parentElement?.parentElement);
+            const container = target!.parentElement!.children[2];
+            if (container.classList.contains("hidden-criteria")) {
+                container.classList.remove("hidden-criteria");
+            } else {
+                container.classList.add("hidden-criteria");
+            }
+            const card = target.parentElement?.parentElement;
+            if (!container.classList.contains("hidden-criteria")) {
+                card!.classList.add(`${style["open-card"]}`);
+            } else {
+                card!.classList.remove(`${style["open-card"]}`);
+            }
+        } else if (similarityNode) {
+            console.log(similarityNode.classList);
+
+            if (!similarityNode.classList.contains("hidden-criteria")) {
+                similarityNode.classList.add("hidden-criteria");
+            }
         }
     };
 
@@ -183,22 +228,30 @@ export const ResultsContainer = () => {
                     openHandler={openHandler}
                     renderNiceClasses={renderNiceClasses}
                     registry={undefined}
+                    calculateAverage={calculateAverage}
                 />
             </div>
-            {applicationSumUp.similarities.map(
-                (registry: IndividualTrademarkMatch, index: number) => {
-                    return (
-                        <ResultsCard
-                            applicationSumUp={applicationSumUp}
-                            closeHandler={closeHandler}
-                            openHandler={openHandler}
-                            renderNiceClasses={renderNiceClasses}
-                            registry={registry}
-                            key={index}
-                        />
-                    );
-                }
+            {typeof applicationSumUp.similarities !== "string" ? (
+                applicationSumUp.similarities.map(
+                    (registry: IndividualTrademarkMatch, index: number) => {
+                        return (
+                            <ResultsCard
+                                applicationSumUp={applicationSumUp}
+                                closeHandler={closeHandler}
+                                openHandler={openHandler}
+                                renderNiceClasses={renderNiceClasses}
+                                registry={registry}
+                                key={index}
+                                calculateAverage={calculateAverage}
+                                toggleCriteria={toggleCriteria}
+                            />
+                        );
+                    }
+                )
+            ) : (
+                <div>No hay similitudes</div>
             )}
+            {}
         </div>
     );
 };

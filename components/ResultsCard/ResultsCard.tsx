@@ -3,6 +3,7 @@ import { ApplicationSumUpModel } from "../../models/ApplicationSumUpModel";
 
 import style from "./ResultsCard.module.scss";
 import { CircularProgressWithLabel } from "../CircularProgressWithLabel/CircularProgressWithLabel";
+import { SyntheticEvent, useEffect } from "react";
 
 export const ResultsCard = ({
     applicationSumUp,
@@ -10,14 +11,31 @@ export const ResultsCard = ({
     closeHandler,
     renderNiceClasses,
     registry = undefined,
+    calculateAverage,
+    toggleCriteria,
 }: {
     applicationSumUp: ApplicationSumUpModel;
     openHandler: Function;
     closeHandler: Function;
     renderNiceClasses: Function;
     registry: undefined | IndividualTrademarkMatch;
+    calculateAverage: Function;
+    toggleCriteria?: Function;
 }) => {
     console.log(registry);
+
+    useEffect(() => {
+        const criteriaContainers = document.querySelectorAll(
+            ".custom-criteria-container"
+        );
+        console.log(criteriaContainers);
+        const criteriaContArray: Element[] = Array.from(criteriaContainers);
+        criteriaContArray.forEach((similarity) => {
+            if (toggleCriteria) {
+                toggleCriteria(undefined, similarity);
+            }
+        });
+    }, []);
 
     return !registry ? (
         <div
@@ -46,23 +64,158 @@ export const ResultsCard = ({
         >
             <div className={`card-body ${style["nice-card-body"]}`}>
                 <div className={`${style["nice-card-header"]}`}>
-                    <p className={`${style["nice-card-title"]}`}>
-                        Similitud encontrada:{" "}
-                        <b className={`${style["brand-title"]}`}>
-                            {`"${registry.trademarkName
-                                .slice(0, 1)
-                                .toUpperCase()}${registry.trademarkName.slice(
-                                1,
-                                registry.trademarkName.length
-                            )}"`}
-                        </b>
-                    </p>
+                    <div className={`${style["similarity-average-container"]}`}>
+                        <p className={`${style["nice-card-title"]}`}>
+                            Similitud encontrada:{" "}
+                            <b className={`${style["brand-title"]}`}>
+                                {`"${registry.trademarkName
+                                    .slice(0, 1)
+                                    .toUpperCase()}${registry.trademarkName.slice(
+                                    1,
+                                    registry.trademarkName.length
+                                )}"`}
+                            </b>
+                        </p>
+                        <div
+                            className={`${style["average-criteria-subcontainer"]}`}
+                        >
+                            <div
+                                className={`${style["similarity-recommendation-container"]}`}
+                            >
+                                <p
+                                    className={`${style["recommendation-text"]}`}
+                                >
+                                    <b
+                                        className={`${
+                                            style["similarity-degree"]
+                                        } ${
+                                            calculateAverage(registry)
+                                                .similarityDegree === "high"
+                                                ? "high-risk"
+                                                : calculateAverage(registry)
+                                                      .similarityDegree ===
+                                                  "moderate"
+                                                ? "moderate-risk"
+                                                : calculateAverage(registry)
+                                                      .similarityDegree ===
+                                                  "low"
+                                                ? "low-risk"
+                                                : "barely-risk"
+                                        }`}
+                                    >
+                                        {calculateAverage(registry)
+                                            .similarityDegree === "high"
+                                            ? "Alta"
+                                            : calculateAverage(registry)
+                                                  .similarityDegree ===
+                                              "moderate"
+                                            ? "Moderada"
+                                            : calculateAverage(registry)
+                                                  .similarityDegree === "low"
+                                            ? "Baja"
+                                            : "Prácticamente nula"}
+                                        :
+                                    </b>{" "}
+                                    &nbsp;{" "}
+                                    {calculateAverage(registry)
+                                        .similarityDegree === "high" ? (
+                                        <>
+                                            En casos en que el porcentaje
+                                            promedio de similitud es mayor al
+                                            75%, es conveniente analizar lo
+                                            siguiente: <br />
+                                            <br />- El grado de similitud es
+                                            demasiado elevado, con lo cual las
+                                            probabilidades de rechazo son
+                                            prácticamente inevitables. No es
+                                            recomendable invertir
+                                            aproximadamente 2 años para intentar
+                                            el registro{" "}
+                                            {
+                                                "(plazo que demora aprox. el trámite)"
+                                            }{" "}
+                                            de una Marca que muy probablemente
+                                            vaya a ser rechazada. <br />
+                                            <br />- La Marca Comercial debe
+                                            servirte para diferenciarte, y en
+                                            este caso sucede exactamente lo
+                                            opuesto, van a relacionarte con esta
+                                            Marca. Con lo cual, desde el punto
+                                            de vista económico y de marketing,
+                                            no es recomendable intentar el
+                                            registro.
+                                        </>
+                                    ) : calculateAverage(registry)
+                                          .similarityDegree === "moderate" ? (
+                                        <>
+                                            En casos en que el porcentaje
+                                            promedio de similitud es mayor al
+                                            50% y menor al 75%, es conveniente
+                                            analizar lo siguiente: <br />
+                                            <br />
+                                            - Una Marca Comercial debe
+                                            distinguir tu producto de otros. El
+                                            hecho de que existan Marcas
+                                            similares te perjudica, ya que puede
+                                            llevar a que tus clientes las
+                                            confundan. Esto se ve traducido en
+                                            un menor valor comercial de la
+                                            Marca, en caso de que la concedan.
+                                            <br />
+                                            <br />- El riesgo de rechazo de tu
+                                            Solicitud de Registro es elevado, lo
+                                            que puede llevar a que pierdas
+                                            aproximadamente 2 años intentando el
+                                            mismo. Es recomendable invertir ese
+                                            tiempo en una Marca que si te
+                                            asegure exclusividad.
+                                        </>
+                                    ) : calculateAverage(registry)
+                                          .similarityDegree === "low" ? (
+                                        "Baja"
+                                    ) : (
+                                        "Prácticamente nula"
+                                    )}
+                                </p>
+                            </div>
+                            <div
+                                className={`${style["average-similarity-container"]}`}
+                            >
+                                <h5
+                                    className={`${style["custom-criteria-subtitle"]}`}
+                                >
+                                    Similitud Total:
+                                </h5>
+                                <CircularProgressWithLabel
+                                    value={calculateAverage(registry).totalAvg}
+                                    mainMeter={true}
+                                    id={
+                                        calculateAverage(registry)
+                                            .similarityDegree
+                                    }
+                                />
+                            </div>
+                        </div>
+                    </div>
                     <p className={`${style["nice-card-subtitle"]}`}>{}</p>
                     <div className={`${style["custom-accordion-container"]}`}>
                         {renderNiceClasses(registry)}
                     </div>
                 </div>
-                <div className={`${style["custom-criteria-container"]}`}>
+
+                <button
+                    className={`btn  ${style["expand-criteria-btn"]}`}
+                    onClick={(evt: SyntheticEvent) => {
+                        if (toggleCriteria) {
+                            toggleCriteria(evt, undefined);
+                        }
+                    }}
+                >
+                    Mostrar criterios
+                </button>
+                <div
+                    className={`${style["custom-criteria-container"]} custom-criteria-container`}
+                >
                     {registry.criteria.map((similarity, index) => {
                         console.log(`El index es ${index} y la similaridad:`);
                         console.log(similarity);
@@ -77,7 +230,7 @@ export const ResultsCard = ({
                             return (
                                 <div>
                                     <h5
-                                        className={`${style["custom-criteria-subtitle"]}`}
+                                        className={`${style["custom-criteria-title"]}`}
                                     >
                                         Diferencia de caracteres: <br /> Modelo
                                         Damerau-Levenshtein
@@ -85,6 +238,7 @@ export const ResultsCard = ({
                                     <CircularProgressWithLabel
                                         value={percentage}
                                         key={index}
+                                        mainMeter={false}
                                     />
                                 </div>
                             );
@@ -93,7 +247,7 @@ export const ResultsCard = ({
                             return (
                                 <div>
                                     <h5
-                                        className={`${style["custom-criteria-subtitle"]}`}
+                                        className={`${style["custom-criteria-title"]}`}
                                     >
                                         Diferencia de caracteres: <br />
                                         Modelo Jaro–Winkler
@@ -101,6 +255,7 @@ export const ResultsCard = ({
                                     <CircularProgressWithLabel
                                         value={percentage}
                                         key={index}
+                                        mainMeter={false}
                                     />
                                 </div>
                             );
@@ -109,7 +264,7 @@ export const ResultsCard = ({
                             return (
                                 <div>
                                     <h5
-                                        className={`${style["custom-criteria-subtitle"]}`}
+                                        className={`${style["custom-criteria-title"]}`}
                                     >
                                         Análisis fonético: <br /> Modelo
                                         Metaphone
@@ -117,6 +272,7 @@ export const ResultsCard = ({
                                     <CircularProgressWithLabel
                                         value={percentage}
                                         key={index}
+                                        mainMeter={false}
                                     />
                                 </div>
                             );
@@ -125,7 +281,7 @@ export const ResultsCard = ({
                             return (
                                 <div>
                                     <h5
-                                        className={`${style["custom-criteria-subtitle"]}`}
+                                        className={`${style["custom-criteria-title"]}`}
                                     >
                                         Similaridad de cosenos: <br /> Modelo
                                         TensorFlow USE
@@ -133,6 +289,7 @@ export const ResultsCard = ({
                                     <CircularProgressWithLabel
                                         value={percentage}
                                         key={index}
+                                        mainMeter={false}
                                     />
                                 </div>
                             );
