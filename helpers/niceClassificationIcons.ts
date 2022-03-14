@@ -142,8 +142,16 @@ export const niceInfo: InfoModel = {
         desc: "Si fabricas alfombras, felpudos, esteras o esterillas, linóleo u otros revestimientos de suelos; tapices murales que no sean de materias textiles; debes proteger en esta Clase Niza.",
         title: `"Fabricas PRODUCTO como alfombras, felpudos, esteras o esterillas, tapices murales que no sean de materias textiles, etc"`,
     },
-    28: { img: "", desc: "", title: "" },
-    29: { img: "", desc: "", title: "" },
+    28: {
+        img: "/assets/img/niceclass28.webp",
+        desc: "Si fabricas juegos o juguetes; aparatos de videojuegos; artículos de gimnasia o deporte; adornos para árboles de Navidad; debes proteger en esta Clase Niza.",
+        title: `"Fabricas PRODUCTO como juegos o juguetes; aparatos de videojuegos; artículos de gimnasia o deporte, etc"`,
+    },
+    29: {
+        img: "/assets/img/niceclass29.webp",
+        desc: "Si produces carne, pescado, carne de ave o carne de caza; extractos de carne; frutas o verduras, hortalizas o legumbres en conserva, congeladas, secas o cocidas; jaleas, confituras, compotas; huevos; leche, quesos, mantequilla, yogur y otros productos lácteos; aceites o grasas para uso alimenticio; debes proteger en esta Clase Niza.",
+        title: `"Produces PRODUCTO como carne, pescado, frutas o verduras, hortalizas o legumbres, etc"`,
+    },
     30: { img: "", desc: "", title: "" },
     31: { img: "", desc: "", title: "" },
     32: { img: "", desc: "", title: "" },
