@@ -53,9 +53,6 @@ export const ResultsCard = ({
                     </b>
                 </p>
                 <p className={`${style["nice-card-subtitle"]}`}>{}</p>
-                <div className={`${style["custom-accordion-container"]}`}>
-                    {renderNiceClasses()}
-                </div>
             </div>
         </div>
     ) : (
@@ -172,9 +169,56 @@ export const ResultsCard = ({
                                         </>
                                     ) : calculateAverage(registry)
                                           .similarityDegree === "low" ? (
-                                        "Baja"
+                                        <>
+                                            En casos en que el porcentaje
+                                            promedio de similitud es mayor al
+                                            25% y menor al 50%, la finalidad de
+                                            destacar la similitud es a los fines
+                                            de lo siguiente: <br />
+                                            <br />
+                                            - Entendemos que existen algunos
+                                            indicios de similitud, aunque no
+                                            resultan tan elevados como para
+                                            tener certidumbre respecto de la
+                                            posibilidad de conflicto. Puedes
+                                            decidir avanzar e intentar registrar
+                                            tu Marca Comercial, estando al tanto
+                                            del riesgo bajo de conflictividad,
+                                            pero existente.
+                                            <br />
+                                            <br />- Los titulares de estas
+                                            Marcas Comerciales podrán presentar
+                                            una Oposición a tu Solicitud de
+                                            Registro. Esto no significa que no
+                                            podrás registrar tu Marca, pero
+                                            deberás buscar la ayuda de un
+                                            Abogado o Agente de la Propiedad
+                                            Industrial para asesorarte respecto
+                                            de las posiblidades de superar dicha
+                                            oposición.
+                                        </>
                                     ) : (
-                                        "Prácticamente nula"
+                                        <>
+                                            En casos en que el porcentaje
+                                            promedio de similitud es menor al
+                                            25%, la finalidad de destacar la
+                                            similitud es a los fines de lo
+                                            siguiente: <br />
+                                            <br />
+                                            - En estos supuestos, entendemos que
+                                            la similitud es prácticamente
+                                            inexistente, y su relevancia es
+                                            relativa. En estos casos no suelen
+                                            existir conflictos para el registro,
+                                            pero consideramos pertinente
+                                            ponerlos en tu conocimiento,
+                                            simplemente para que estés al tanto,
+                                            y no haya sorpresas.
+                                            <br />
+                                            <br />- Puedes intentar entonces
+                                            avanzar con tu solicitud de registro
+                                            de Marca Comercial.
+                                        </>
                                     )}
                                 </p>
                             </div>

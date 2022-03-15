@@ -159,7 +159,7 @@
     min-width: 90vw;
     max-height: 90vh;
     min-height: 90vh;
-    margin: 2em 4em 0em;
+    margin: 2em 2em 0em 4em;
 }
 
 .main-card {
@@ -200,7 +200,7 @@
 
 .similarity-recommendation-container {
     color: white;
-    max-width: 70%;
+    max-width: 80%;
     padding-right: 2em;
     border-right: 2px solid var(--globalCircleDropdownColor);
 }
@@ -216,4 +216,15 @@
 
 .average-similarity-container {
     padding-top: 1em;
+    z-index: 2;
+}
+
+.custom-accordion-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: -1.5em;
+    top: 1em;
+    max-height: 12em;
+    overflow-y: scroll;
 }

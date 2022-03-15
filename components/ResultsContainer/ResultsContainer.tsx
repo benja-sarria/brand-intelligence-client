@@ -94,7 +94,7 @@ export const ResultsContainer = () => {
                     <Accordion flush key={index}>
                         <Accordion.Item eventKey="0">
                             <Accordion.Header
-                                className={` ${style["accordion-custom-header"]}`}
+                                className={` ${style["accordion-custom-header"]} ${style["main-custom-header"]}`}
                                 onClick={(evt) => {
                                     openHandler(evt);
                                 }}
@@ -106,7 +106,7 @@ export const ResultsContainer = () => {
                                 </div>
                             </Accordion.Header>
                             <Accordion.Body
-                                className={` ${style["custom-accordion-body"]}`}
+                                className={` ${style["custom-accordion-body"]} ${style["main-accordion-body"]}`}
                             >
                                 <div>
                                     {applicationSumUp.selectedNiceProtection[
@@ -222,14 +222,25 @@ export const ResultsContainer = () => {
     return (
         <div>
             <div>
-                <ResultsCard
-                    applicationSumUp={applicationSumUp}
-                    closeHandler={closeHandler}
-                    openHandler={openHandler}
-                    renderNiceClasses={renderNiceClasses}
-                    registry={undefined}
-                    calculateAverage={calculateAverage}
-                />
+                <div className={`${style["principal-cards-container"]}`}>
+                    <ResultsCard
+                        applicationSumUp={applicationSumUp}
+                        closeHandler={closeHandler}
+                        openHandler={openHandler}
+                        renderNiceClasses={renderNiceClasses}
+                        registry={undefined}
+                        calculateAverage={calculateAverage}
+                    />
+                    <div className={`card ${style["sum-up-card"]}`}>
+                        <div>
+                            <h2>Resumen de la Protección</h2>
+                            <div>
+                                <h3>Clases Niza a proteger</h3>
+                                <div>{renderNiceClasses()}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             {typeof applicationSumUp.similarities !== "string" ? (
                 applicationSumUp.similarities.map(

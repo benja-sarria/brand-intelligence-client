@@ -4,6 +4,7 @@ import style from "./TrademarkFormContainer.module.scss";
 import { TrademarkFormCard } from "../TrademarkFormCard/TrademarkFormCard";
 import debounce from "lodash.debounce";
 import { ResultsContainer } from "../ResultsContainer/ResultsContainer";
+import { LoadingComponent } from "../LoadingComponent/LoadingComponent";
 
 export const TrademarkFormContainer = () => {
     const {
@@ -85,7 +86,9 @@ export const TrademarkFormContainer = () => {
     }, [applicationSumUp]);
 
     return loading ? (
-        <></>
+        <div className={`${style["card-form-container"]}`}>
+            <LoadingComponent />
+        </div>
     ) : applicationSumUp &&
       applicationSumUp.selectedNiceProtection &&
       applicationSumUp.trademark &&

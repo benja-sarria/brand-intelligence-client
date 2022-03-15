@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { NiceClassContext } from "../../context/NiceClassProvider";
 import { CardForm } from "../CardForm/CardForm";
 import style from "../CardForm/CardForm.module.scss";
+import { LoadingComponent } from "../LoadingComponent/LoadingComponent";
 
 export const CardFormContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -40,5 +41,11 @@ export const CardFormContainer = () => {
         }
     };
 
-    return loading ? <></> : <CardForm btnHandler={btnHandler} />;
+    return loading ? (
+        <div className={`${style["card-form-container"]}`}>
+            <LoadingComponent />
+        </div>
+    ) : (
+        <CardForm btnHandler={btnHandler} />
+    );
 };

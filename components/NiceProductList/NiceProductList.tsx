@@ -17,6 +17,7 @@ import { ControlledCheckbox } from "../ControlledCheckbox/ControlledCheckbox";
 import { compareClass } from "../../helpers/compareClassFunction";
 import { TableMenu } from "../TableMenu/TableMenu";
 import { compareSelect } from "../../helpers/compareSelectFunction";
+import { PopOverComponent } from "../PopOverComponent/PopOverComponent";
 import Link from "next/link";
 
 export const NiceProductList = () => {
@@ -84,7 +85,7 @@ export const NiceProductList = () => {
             cells.forEach((cell: any) => {
                 cell.classList.add(`${style["custom-selected-cell"]}`);
                 if (cell.dataset.type) {
-                    cell.children[0].src =
+                    cell.children[0].children[0].children[0].src =
                         cell.dataset.type === "product"
                             ? "/assets/img/productSecondary.webp"
                             : "/assets/img/servicesSecondary.webp";
@@ -102,7 +103,7 @@ export const NiceProductList = () => {
             cells.forEach((cell: any) => {
                 cell.classList.add(`${style["custom-selected-cell"]}`);
                 if (cell.dataset.type) {
-                    cell.children[0].src =
+                    cell.children[0].children[0].children[0].src =
                         cell.dataset.type === "product"
                             ? "/assets/img/productSecondary.webp"
                             : "/assets/img/servicesSecondary.webp";
@@ -129,7 +130,7 @@ export const NiceProductList = () => {
             cells.forEach((cell: any) => {
                 cell.classList.remove(`${style["custom-selected-cell"]}`);
                 if (cell.dataset.type) {
-                    cell.children[0].src =
+                    cell.children[0].children[0].children[0].src =
                         cell.dataset.type === "product"
                             ? "/assets/img/productMain.webp"
                             : "/assets/img/servicesMain.webp";
@@ -154,7 +155,7 @@ export const NiceProductList = () => {
                             `${style["custom-selected-cell"]}`
                         );
                         if (children.dataset.type) {
-                            children.children[0].src =
+                            children.children[0].children[0].children[0].src =
                                 children.dataset.type === "product"
                                     ? "/assets/img/productMain.webp"
                                     : "/assets/img/servicesMain.webp";
@@ -171,7 +172,7 @@ export const NiceProductList = () => {
                             `${style["custom-selected-cell"]}`
                         );
                         if (children.dataset.type) {
-                            children.children[0].src =
+                            children.children[0].children[0].children[0].src =
                                 children.dataset.type === "product"
                                     ? "/assets/img/productSecondary.webp"
                                     : "/assets/img/servicesSecondary.webp";
@@ -185,7 +186,7 @@ export const NiceProductList = () => {
                         `${style["custom-selected-cell"]}`
                     );
                     if (children.dataset.type) {
-                        children.children[0].src =
+                        children.children[0].children[0].children[0].src =
                             children.dataset.type === "product"
                                 ? "/assets/img/productMain.webp"
                                 : "/assets/img/servicesMain.webp";
@@ -416,15 +417,19 @@ export const NiceProductList = () => {
                             }
                         >
                             {term.niceClass < 35 ? (
-                                <img
-                                    src="/assets/img/productMain.webp"
-                                    className={`${style["custom-cell-img"]}`}
-                                />
+                                <PopOverComponent childType={"product"}>
+                                    <img
+                                        src="/assets/img/productMain.webp"
+                                        className={`${style["custom-cell-img"]}`}
+                                    />
+                                </PopOverComponent>
                             ) : (
-                                <img
-                                    src="/assets/img/servicesMain.webp"
-                                    className={`${style["custom-cell-img"]}`}
-                                />
+                                <PopOverComponent childType={"service"}>
+                                    <img
+                                        src="/assets/img/servicesMain.webp"
+                                        className={`${style["custom-cell-img"]}`}
+                                    />
+                                </PopOverComponent>
                             )}
                         </td>
                         <td

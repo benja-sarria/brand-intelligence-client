@@ -1,0 +1,48 @@
+.loading-container {
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.bkg-blur {
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    min-width: 99.8vw;
+    min-height: 100%;
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    background-color: rgba(33, 21, 53, 0.561);
+    z-index: 5;
+}
+.bkg-image {
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    min-width: 99.8vw;
+    min-height: 100%;
+    background-image: url("/assets/img/background.webp");
+    background-size: cover;
+    z-index: 4;
+}
+
+.spinner-container {
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-text {
+    font-size: 1.5em;
+    color: var(--checkboxColor);
+    z-index: 6;
+}
